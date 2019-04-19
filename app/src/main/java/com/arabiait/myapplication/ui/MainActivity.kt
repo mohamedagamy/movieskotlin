@@ -8,9 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.arabiait.myapplication.R
 import com.arabiait.myapplication.api.IMDBService
+import com.arabiait.myapplication.api.RetrofitBuilder
 import com.arabiait.myapplication.pojo.MoviesResponse
 import com.arabiait.myapplication.pojo.ProductionCompaniesItem
+import com.arabiait.myapplication.util.API_KEY
 import com.arabiait.myapplication.util.BASE_URL
+import okhttp3.HttpUrl
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,13 +50,10 @@ class MainActivity : AppCompatActivity() {
 
 
     fun createApiCall() {
-        val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
 
+        val retrofit = RetrofitBuilder().createRetrofitObject()
         val service = retrofit.create(IMDBService::class.java)
-        val movie = service.listMovies().enqueue(object : Callback<MoviesResponse> {
+        val movie = service.listMovies("550").enqueue(object : Callback<MoviesResponse> {
             override fun onFailure(call: Call<MoviesResponse>, t: Throwable) {
                 Log.e("", "" + call.toString())
             }
