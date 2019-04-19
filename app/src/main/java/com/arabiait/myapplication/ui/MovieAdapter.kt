@@ -1,11 +1,12 @@
-package com.arabiait.myapplication
+package com.arabiait.myapplication.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.arabiait.myapplication.pojo.ProductionCompaniesItem
 
-class MovieAdapter(movies: List<Movie>) : RecyclerView.Adapter<MovieHolder>() {
-    private var movieList:List<Movie> = movies
+class MovieAdapter(movies: List<ProductionCompaniesItem>) : RecyclerView.Adapter<MovieHolder>() {
+    private var movieList:List<ProductionCompaniesItem> = movies
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         //TODO("not implemented")

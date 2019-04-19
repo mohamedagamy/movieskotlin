@@ -1,15 +1,17 @@
-package com.arabiait.myapplication
+package com.arabiait.myapplication.ui
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.arabiait.myapplication.R
+import com.arabiait.myapplication.pojo.ProductionCompaniesItem
+import com.arabiait.myapplication.util.POSTER_BASE_URL
+import com.squareup.picasso.Picasso
 
 class MovieHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(
@@ -26,17 +28,20 @@ class MovieHolder(inflater: LayoutInflater, parent: ViewGroup) :
         mMovieYear = itemView.findViewById(R.id.main_tv_year)
         mMovieImage = itemView.findViewById(R.id.main_iv_pic)
 
+
         itemView.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
-        Toast.makeText(v?.context,"",Toast.LENGTH_SHORT).show()
+        Toast.makeText(v?.context,""+v?.tag,Toast.LENGTH_SHORT).show()
     }
 
-    fun bind(movie: Movie){
-        mMovieTitle?.text = movie.name
-        mMovieYear?.text = movie.year.toString()
-        mMovieImage?.setImageResource(movie.picture)
+    fun bind(movie: ProductionCompaniesItem){
+        mMovieTitle.text = movie.name
+        mMovieYear.text = movie.originCountry.toString()
+        Picasso.get().load(POSTER_BASE_URL+movie.logoPath).into(mMovieImage)
+
+        itemView.setTag(mMovieTitle.text)
     }
 
 
