@@ -8,10 +8,10 @@ import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitBuilder{
+class RetrofitBuilder {
 
 
-    class MyInterceptor : okhttp3.Interceptor{
+    class MyInterceptor : okhttp3.Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             var request = chain.request()
             val httpUrl = request.url().newBuilder().addQueryParameter("api_key", API_KEY).build()
@@ -22,17 +22,15 @@ class RetrofitBuilder{
     }
 
 
-    fun createRetrofitObject():Retrofit{
+    fun createRetrofitObject(): Retrofit {
         val okHttpClient = OkHttpClient().newBuilder().addInterceptor(MyInterceptor()).build()
 
-       return Retrofit.Builder()
+        return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build()
     }
-
-
 
 
 }

@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="4dp"
-    android:layout_margin="8dp"
+    android:layout_margin="4dp"
     app:cardElevation="4dp">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/main_iv_pic"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_margin="4dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
             app:srcCompat="@drawable/ic_video_camera" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/main_tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Land of movies" />
+            android:layout_margin="4dp"
+            android:text="Land of movies"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/main_tv_year"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="2019" />
+            android:layout_margin="4dp"
+            android:text="2019"
+            android:gravity="center"
+            android:layout_gravity="center"
+            />
 
     </LinearLayout>
 

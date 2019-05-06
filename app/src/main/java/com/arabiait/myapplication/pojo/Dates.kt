@@ -4,11 +4,11 @@ import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
 @Generated("com.robohorse.robopojogenerator")
-data class GenresItem(
+data class Dates(
 
-	@field:SerializedName("name")
-	val name: String? = null,
+	@field:SerializedName("maximum")
+	val maximum: String? = null,
 
-	@field:SerializedName("id")
-	val id: Int? = null
+	@field:SerializedName("minimum")
+	val minimum: String? = null
 )
