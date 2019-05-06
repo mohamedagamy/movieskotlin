@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         val retrofit = RetrofitBuilder().createRetrofitObject()
         val service = retrofit.create(IMDBService::class.java)
-        val movie = service.getLatestMovies().enqueue(object : Callback<GeneralResponse> {
+        val movie = service.listMovies("1").enqueue(object : Callback<GeneralResponse> {
             override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
                 Log.e("", "" + call.toString())
             }
