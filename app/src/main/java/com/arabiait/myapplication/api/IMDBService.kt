@@ -12,5 +12,5 @@ interface IMDBService {
     fun listMovies(@Path("movie_id") movie_id: String): Call<GeneralResponse>
 
     @GET("movie/upcoming")
-    fun getUpcomingMovies(@Query("page") page: String): Call<GeneralResponse>
+    fun getUpcomingMovies(@Query("page") page: Int): Call<GeneralResponse>
 }
