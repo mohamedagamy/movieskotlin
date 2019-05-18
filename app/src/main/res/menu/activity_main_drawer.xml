@@ -8,31 +8,26 @@
             <item
                 android:id="@+id/nav_upcoming"
                 android:title="Upcoming"
-                android:icon="@drawable/ic_menu_gallery"
-                />
+                android:icon="@drawable/ic_menu_gallery" />
             <item
                 android:id="@+id/nav_top_rated"
                 android:title="Top Rated"
-                android:icon="@drawable/ic_menu_gallery"
-                />
+                android:icon="@drawable/ic_menu_gallery" />
 
             <item
                 android:id="@+id/nav_popular"
                 android:title="Popular"
-                android:icon="@drawable/ic_menu_gallery"
-                />
+                android:icon="@drawable/ic_menu_gallery" />
 
             <item
                 android:id="@+id/nav_now_playing"
                 android:title="Now Playing"
-                android:icon="@drawable/ic_menu_gallery"
-                />
+                android:icon="@drawable/ic_menu_gallery" />
 
             <item
                 android:id="@+id/nav_latest"
                 android:title="Latest"
-                android:icon="@drawable/ic_menu_gallery"
-                />
+                android:icon="@drawable/ic_menu_gallery" />
         </menu>
     </item>
 

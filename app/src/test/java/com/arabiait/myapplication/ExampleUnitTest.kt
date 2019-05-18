@@ -1,8 +1,5 @@
 package com.arabiait.myapplication
 
-import junit.framework.Assert.assertEquals
-import org.junit.Test
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *

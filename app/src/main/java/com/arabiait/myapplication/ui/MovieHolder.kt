@@ -36,7 +36,7 @@ class MovieHolder(itemView: View) :
     fun bind(movie: ResultsItem?) {
         mMovieTitle.text = movie?.title
         mMovieYear.text = movie?.releaseDate.toString()
-        Picasso.get().load(IMAGE_BASE_URL +movie?.posterPath).into(mMovieImage)
+        Picasso.get().load(IMAGE_BASE_URL + movie?.posterPath).into(mMovieImage)
 
         itemView.setTag(mMovieTitle.text)
     }

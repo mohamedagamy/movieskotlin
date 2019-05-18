@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.arabiait.myapplication.R
-import com.arabiait.myapplication.pojo.GeneralResponse
 import com.arabiait.myapplication.pojo.ResultsItem
 
 class MovieAdapter(movies: List<ResultsItem>) : RecyclerView.Adapter<MovieHolder>() {
@@ -17,12 +16,12 @@ class MovieAdapter(movies: List<ResultsItem>) : RecyclerView.Adapter<MovieHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         //TODO("not implemented")
         val inflater = LayoutInflater.from(parent.context)
-        val layoutId =  when(ITEM_TYPE){
-            VIEW_ITEM->R.layout.rv_list_item
+        val layoutId = when (ITEM_TYPE) {
+            VIEW_ITEM -> R.layout.rv_list_item
 
-           else-> R.layout.rv_list_item
+            else -> R.layout.rv_list_item
         }
-        val view: View= inflater.inflate(layoutId,parent, false)
+        val view: View = inflater.inflate(layoutId, parent, false)
         return MovieHolder(view)
     }
 
@@ -39,16 +38,16 @@ class MovieAdapter(movies: List<ResultsItem>) : RecyclerView.Adapter<MovieHolder
     }
 
     override fun getItemViewType(position: Int): Int {
-        when(position){
+        when (position) {
             itemCount -> ITEM_TYPE = LOADING_ITEM
-            else -> ITEM_TYPE =VIEW_ITEM
+            else -> ITEM_TYPE = VIEW_ITEM
         }
 
         return ITEM_TYPE
     }
 
     fun resetData() {
-        this.movieList.toMutableList().clear()
+        (movieList as ArrayList).removeAll(movieList)
         notifyDataSetChanged()
     }
 

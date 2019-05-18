@@ -3,14 +3,11 @@ package com.arabiait.myapplication.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
 import com.arabiait.myapplication.R
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -27,6 +24,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+        replaceFragment(R.id.nav_upcoming)
     }
 
     override fun onBackPressed() {
@@ -55,42 +53,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        var fragment:Fragment
-        when (item.itemId) {
-            R.id.nav_top_rated -> {
-                // Handle the camera action
-                Toast.makeText(this,"Top Rated",Toast.LENGTH_SHORT).show()
-            }
-            R.id.nav_now_playing -> {
-                Toast.makeText(this,"Now Playing",Toast.LENGTH_SHORT).show()
-            }
-            R.id.nav_popular -> {
-                Toast.makeText(this,"Popular",Toast.LENGTH_SHORT).show()
-            }
-            R.id.nav_latest -> {
-                Toast.makeText(this,"Latest",Toast.LENGTH_SHORT).show()
-            }
-            R.id.nav_upcoming -> {
-                Toast.makeText(this,"Upcoming",Toast.LENGTH_SHORT).show()
-                fragment = MoviesFragment()
-            }
+        replaceFragment(item.itemId)
+        return true
+    }
 
-            else->  {
-                fragment = MoviesFragment()
-            }
-        }
-
+    private fun replaceFragment(item: Int) {
+        var fragment = MoviesFragment()
         val ft = supportFragmentManager.beginTransaction()
         // Replace the contents of the container with the new fragment
-        ft.replace(R.id.main_container, MoviesFragment())
-        // or ft.add(R.id.your_placeholder, new FooFragment());
+        ft.replace(R.id.main_container, fragment, item.toString())
         // Complete the changes added above
         ft.commit()
 
         drawer_layout.closeDrawer(GravityCompat.START)
-        return true
     }
-
 
 
 }

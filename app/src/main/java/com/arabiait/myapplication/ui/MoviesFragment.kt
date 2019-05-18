@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +15,7 @@ import com.arabiait.myapplication.R
 import com.arabiait.myapplication.api.IMDBService
 import com.arabiait.myapplication.api.RetrofitBuilder
 import com.arabiait.myapplication.pojo.GeneralResponse
+import com.arabiait.myapplication.pojo.LatestMovies
 import com.arabiait.myapplication.pojo.ResultsItem
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,10 +23,17 @@ import retrofit2.Response
 
 class MoviesFragment : Fragment() {
 
+    companion object {
+        var currentPageNumber: Int = 1
+    }
+
+    var totalPageCount: Int = 0
     lateinit var recyclerView: RecyclerView
-    var currentPageNumber:Int = 1
-    var totalPageCount:Int = 0
-    lateinit var movieAdapter:MovieAdapter
+    lateinit var movieAdapter: MovieAdapter
+    lateinit var apiCall: Call<GeneralResponse>
+    lateinit var apiLatestCall: Call<LatestMovies>
+    val retrofit = RetrofitBuilder().createRetrofitObject()
+    val service = retrofit.create(IMDBService::class.java)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,9 +45,10 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        currentPageNumber = 1
+        initScrollListener(tag?.toInt())
+        loadMoreMovies(tag?.toInt(), currentPageNumber)
 
-        initScrollListener()
-        getUpcomingMovies(currentPageNumber)
     }
 
 
@@ -51,29 +60,65 @@ class MoviesFragment : Fragment() {
         }
     }
 
-    fun getUpcomingMovies(page:Int) {
 
-        val retrofit = RetrofitBuilder().createRetrofitObject()
-        val service = retrofit.create(IMDBService::class.java)
-        val movie = service.getUpcomingMovies(page).enqueue(object : Callback<GeneralResponse> {
-            override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
-                Log.e("", "" + call.toString())
+    private fun loadMoreMovies(tag: Int?, page: Int) {
+        when (tag) {
+            R.id.nav_top_rated -> {
+                // Handle the camera action
+                Toast.makeText(activity, "Top Rated", Toast.LENGTH_SHORT).show()
+                apiCall = service.getTopRatedMovies(page)
             }
-
-            override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
-                val resultList: GeneralResponse = response.body()!!
-                Log.d("", "" + resultList.toString())
-                totalPageCount = response.body()?.totalPages!!
-                reload(resultList)
+            R.id.nav_now_playing -> {
+                Toast.makeText(activity, "Now Playing", Toast.LENGTH_SHORT).show()
+                apiCall = service.getNowPlayingMovies(page)
             }
+            R.id.nav_popular -> {
+                Toast.makeText(activity, "Popular", Toast.LENGTH_SHORT).show()
+                apiCall = service.getPopularMovies(page)
+            }
+            R.id.nav_latest -> {
+                Toast.makeText(activity, "Latest", Toast.LENGTH_SHORT).show()
+                apiLatestCall = service.getLatestMovies()
 
-        })
+            }
+            R.id.nav_upcoming -> {
+                Toast.makeText(activity, "Upcoming", Toast.LENGTH_SHORT).show()
+                apiCall = service.getUpcomingMovies(page)
+            }
+        }
+        if (tag != R.id.nav_latest) {
+            apiCall.enqueue(object : Callback<GeneralResponse> {
+                override fun onFailure(call: Call<GeneralResponse>, t: Throwable) {
+                    Log.e("", "" + call.toString())
+                }
 
-        Log.d("", "" + movie)
-    }
-    fun initScrollListener()
-    {
-        //https://www.journaldev.com/24041/android-recyclerview-load-more-endless-scrolling
+                override fun onResponse(call: Call<GeneralResponse>, response: Response<GeneralResponse>) {
+                    //var currentResource =  if (tag == R.id.nav_latest) response as LatestMovies else response as GeneralResponse
+                    val resultList: GeneralResponse = response.body()!!
+                    totalPageCount = resultList.totalPages ?: 0
+                    if (totalPageCount > 0)
+                        reload(resultList)
+                }
+
+            })
+        } else {
+            apiLatestCall.enqueue(object : Callback<LatestMovies> {
+                override fun onFailure(call: Call<LatestMovies>, t: Throwable) {
+                    Log.e("", "" + call.toString())
+                }
+
+                override fun onResponse(call: Call<LatestMovies>, response: Response<LatestMovies>) {
+                    //var currentResource =  if (tag == R.id.nav_latest) response as LatestMovies else response as GeneralResponse
+                    val resultList: LatestMovies = response.body()!!
+                    //reload("")
+                }
+
+            })
+        }
+    }//End Load More movies
+
+
+    fun initScrollListener(tag: Int?) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -82,60 +127,18 @@ class MoviesFragment : Fragment() {
                 if (linearLayoutManager!!.itemCount
                         <= linearLayoutManager.findLastVisibleItemPosition() + 2) {
 
-                    if (currentPageNumber< totalPageCount)
-                        currentPageNumber++
-                    else
-                        currentPageNumber = 1
+                    if (currentPageNumber < totalPageCount) currentPageNumber++ else currentPageNumber = 1
 
-                    Log.e("currentPageNumber: #",""+currentPageNumber)
-                    getUpcomingMovies(currentPageNumber)
+                    Log.e("currentPageNumber: #", "" + currentPageNumber + " / " + totalPageCount)
+                    loadMoreMovies(tag, currentPageNumber)
                     movieAdapter.resetData()
 
                 }
             }
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
             }
         })
     }
-
-
-
 }//End class
-
-
-
-
-
-
-
-
-
-/*    private void loadMore()
-    {
-        rowsArrayList.add(null);
-        recyclerViewAdapter.notifyItemInserted(rowsArrayList.size() - 1);
-
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable () {
-            @Override
-            public void run() {
-                rowsArrayList.remove(rowsArrayList.size() - 1);
-                int scrollPosition = rowsArrayList . size ();
-                recyclerViewAdapter.notifyItemRemoved(scrollPosition);
-                int currentSize = scrollPosition;
-                int nextLimit = currentSize +10;
-
-                while (currentSize - 1 < nextLimit) {
-                    rowsArrayList.add("Item " + currentSize);
-                    currentSize++;
-                }
-
-                recyclerViewAdapter.notifyDataSetChanged();
-                isLoading = false;
-            }
-        }, 2000);
-
-
-    }*/

@@ -18,8 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?attr/actionBarSize"
-        android:fitsSystemWindows="true">
-    </FrameLayout>
+        android:fitsSystemWindows="true"></FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
@@ -29,7 +28,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer"
-        android:visibility="visible"
-        />
+        android:visibility="visible" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

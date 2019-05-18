@@ -1,9 +1,5 @@
 package com.arabiait.myapplication
 
-import junit.framework.Assert.assertEquals
-import org.junit.Test
-import org.junit.runner.RunWith
-
 /**
  * Instrumented test, which will execute on an Android device.
  *

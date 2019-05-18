@@ -26,8 +26,7 @@
             android:layout_margin="4dp"
             android:text="Land of movies"
             android:gravity="center"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/main_tv_year"
@@ -36,8 +35,7 @@
             android:layout_margin="4dp"
             android:text="2019"
             android:gravity="center"
-            android:layout_gravity="center"
-            />
+            android:layout_gravity="center" />
 
     </LinearLayout>
 
