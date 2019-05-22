@@ -29,7 +29,8 @@ class MoviesFragment : Fragment() {
 
     var totalPageCount: Int = 0
     lateinit var recyclerView: RecyclerView
-    lateinit var movieAdapter: MovieAdapter
+    lateinit var movieAdapter: RecyclerView.Adapter<MovieHolder>
+    lateinit var latestMovieAdapter: RecyclerView.Adapter<LatestMovieHolder>
     lateinit var apiCall: Call<GeneralResponse>
     lateinit var apiLatestCall: Call<LatestMovies>
     val retrofit = RetrofitBuilder().createRetrofitObject()
@@ -52,11 +53,19 @@ class MoviesFragment : Fragment() {
     }
 
 
-    private fun reload(moviesList: GeneralResponse) {
+    private fun reloadMovies(moviesList: GeneralResponse) {
         recyclerView.apply {
             layoutManager = GridLayoutManager(null, 2)
             adapter = MovieAdapter(moviesList.results as List<ResultsItem>)
             movieAdapter = adapter as MovieAdapter
+        }
+    }
+
+    private fun reloadLatestMovies(moviesList: LatestMovies) {
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            adapter = LatestMoviesAdapter(moviesList)
+            latestMovieAdapter = adapter as LatestMoviesAdapter
         }
     }
 
@@ -78,7 +87,7 @@ class MoviesFragment : Fragment() {
             }
             R.id.nav_latest -> {
                 Toast.makeText(activity, "Latest", Toast.LENGTH_SHORT).show()
-                apiLatestCall = service.getLatestMovies()
+                getLatestMovies()
 
             }
             R.id.nav_upcoming -> {
@@ -97,25 +106,28 @@ class MoviesFragment : Fragment() {
                     val resultList: GeneralResponse = response.body()!!
                     totalPageCount = resultList.totalPages ?: 0
                     if (totalPageCount > 0)
-                        reload(resultList)
-                }
-
-            })
-        } else {
-            apiLatestCall.enqueue(object : Callback<LatestMovies> {
-                override fun onFailure(call: Call<LatestMovies>, t: Throwable) {
-                    Log.e("", "" + call.toString())
-                }
-
-                override fun onResponse(call: Call<LatestMovies>, response: Response<LatestMovies>) {
-                    //var currentResource =  if (tag == R.id.nav_latest) response as LatestMovies else response as GeneralResponse
-                    val resultList: LatestMovies = response.body()!!
-                    //reload("")
+                        reloadMovies(resultList)
                 }
 
             })
         }
     }//End Load More movies
+
+    private fun getLatestMovies() {
+        apiLatestCall = service.getLatestMovies()
+        apiLatestCall.enqueue(object : Callback<LatestMovies> {
+            override fun onFailure(call: Call<LatestMovies>, t: Throwable) {
+                Log.e("", "" + call.toString())
+            }
+
+            override fun onResponse(call: Call<LatestMovies>, response: Response<LatestMovies>) {
+                //var currentResource =  if (tag == R.id.nav_latest) response as LatestMovies else response as GeneralResponse
+                val resultList: LatestMovies = response.body()!!
+                reloadLatestMovies(resultList)
+            }
+
+        })
+    }
 
 
     fun initScrollListener(tag: Int?) {
@@ -130,8 +142,9 @@ class MoviesFragment : Fragment() {
                     if (currentPageNumber < totalPageCount) currentPageNumber++ else currentPageNumber = 1
 
                     Log.e("currentPageNumber: #", "" + currentPageNumber + " / " + totalPageCount)
-                    loadMoreMovies(tag, currentPageNumber)
-                    movieAdapter.resetData()
+                    if(tag != R.id.nav_latest)
+                        loadMoreMovies(tag, currentPageNumber)
+                    //movieAdapter.resetData()
 
                 }
             }
