@@ -1,18 +1,32 @@
 package com.arabiait.myapplication.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.arabiait.myapplication.R
+import com.arabiait.myapplication.pojo.PojoTest
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import io.realm.Realm
+import io.realm.DynamicRealm
+import io.realm.DynamicRealmObject
+import io.realm.RealmConfiguration
+import io.realm.kotlin.createObject
+import io.realm.kotlin.delete
+
+
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    lateinit var realm: Realm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,7 +38,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-        replaceFragment(R.id.nav_upcoming)
+        replaceFragment(R.id.nav_upcoming)    }
+
+    private fun testRealm() {
+        //val realmConfig = RealmConfiguration.Builder().build()
+        //val realm = DynamicRealm.getInstance(realmConfig)
+        realm = Realm.getDefaultInstance()
+
+
+        val pojoTestList = listOf(
+            PojoTest("100",100),
+            PojoTest("100",200),
+            PojoTest("100",300),
+            PojoTest("100",400),
+            PojoTest("100",500),
+            PojoTest("100",600),
+            PojoTest("100",700),
+            PojoTest("100",800),
+            PojoTest("100",900),
+            PojoTest("100",1000))
+
+        realm.executeTransaction { realm ->
+
+            for (item in pojoTestList){
+                val person = realm.createObject<PojoTest>()
+                person.name = item.name
+                person.age = item.age
+            }
+
+        }
     }
 
     override fun onBackPressed() {
@@ -66,6 +108,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ft.commit()
 
         drawer_layout.closeDrawer(GravityCompat.START)
+    }
+
+    override fun onDestroy() {
+        realm.close()
+        super.onDestroy()
+
     }
 
 
