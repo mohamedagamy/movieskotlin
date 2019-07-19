@@ -56,7 +56,7 @@ class MoviesFragment : Fragment() {
     private fun reloadMovies(moviesList: GeneralResponse) {
         recyclerView.apply {
             layoutManager = GridLayoutManager(null, 2)
-            adapter = MovieAdapter(moviesList.results as List<ResultsItem>)
+            adapter = MovieAdapter(moviesList.results!!)
             movieAdapter = adapter as MovieAdapter
         }
     }

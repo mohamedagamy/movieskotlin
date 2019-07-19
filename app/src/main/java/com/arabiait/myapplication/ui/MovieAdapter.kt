@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.arabiait.myapplication.R
 import com.arabiait.myapplication.pojo.ResultsItem
 
-class MovieAdapter(movies: List<ResultsItem>) : RecyclerView.Adapter<MovieHolder>() {
-    private var movieList: List<ResultsItem> = movies
+class MovieAdapter(movies: List<ResultsItem?>) : RecyclerView.Adapter<MovieHolder>() {
+    private var movieList: List<ResultsItem?> = movies
     private var LOADING_ITEM = 200
     private var VIEW_ITEM = 100
     private var ITEM_TYPE = 100

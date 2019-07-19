@@ -8,7 +8,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.arabiait.myapplication.R
 import com.arabiait.myapplication.pojo.LatestMovies
-import com.arabiait.myapplication.pojo.ResultsItem
 import com.arabiait.myapplication.util.IMAGE_BASE_URL
 import com.squareup.picasso.Picasso
 
